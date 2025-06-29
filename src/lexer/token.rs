@@ -38,17 +38,57 @@ pub enum TokenKind {
     Return,
 }
 
+impl TokenKind {
+    pub fn to_string(&self) -> String {
+        match self {
+            TokenKind::Illegal => "Illegal".to_string(),
+            TokenKind::Eof => "Eof".to_string(),
+            TokenKind::Identifier(val) => val.to_string(),
+            TokenKind::Number(val) => val.to_string(),
+            TokenKind::Assign => "=".to_string(),
+            TokenKind::Plus => "+".to_string(),
+            TokenKind::Minus => "-".to_string(),
+            TokenKind::Bang => "!".to_string(),
+            TokenKind::Asterisk => "*".to_string(),
+            TokenKind::Slash => "/".to_string(),
+            TokenKind::Equal => "==".to_string(),
+            TokenKind::NotEqual => "!=".to_string(),
+            TokenKind::LessThan => "<".to_string(),
+            TokenKind::GreaterThan => ">".to_string(),
+            TokenKind::Comma => ",".to_string(),
+            TokenKind::Semicolon => ";".to_string(),
+            TokenKind::LParen => "(".to_string(),
+            TokenKind::RParen => ")".to_string(),
+            TokenKind::LBrace => "{".to_string(),
+            TokenKind::RBrace => "}".to_string(),
+            TokenKind::Function => "fn".to_string(),
+            TokenKind::Let => "let".to_string(),
+            TokenKind::True => "true".to_string(),
+            TokenKind::False => "false".to_string(),
+            TokenKind::If => "if".to_string(),
+            TokenKind::Else => "else".to_string(),
+            TokenKind::Return => "return".to_string(),
+        }
+    }
+}
+
 pub struct Token {
     kind: TokenKind,
+    literal: String,
 }
 
 impl Token {
     pub fn new(kind: TokenKind) -> Self {
-        Self { kind }
+        let literal = kind.to_string();
+        Self { kind, literal }
     }
 
     pub fn kind(&self) -> TokenKind {
         self.kind.clone()
+    }
+
+    pub fn literal(&self) -> &str {
+        &self.literal
     }
 }
 

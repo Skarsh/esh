@@ -136,13 +136,46 @@ impl<'a> Lexer {
 mod tests {
     use super::*;
 
+    struct TestCase {
+        expected_kind: TokenKind,
+        expected_literal: String,
+    }
+
     #[test]
     fn test_next_token() {
         let source = r#"
             let five = 5;
-            fn add(x: int, y: in) {}
         "#;
 
         let mut lexer = Lexer::new(source);
+
+        let test_cases = vec![
+            TestCase {
+                expected_kind: TokenKind::Let,
+                expected_literal: "let".to_string(),
+            },
+            TestCase {
+                expected_kind: TokenKind::Identifier("five".to_string()),
+                expected_literal: "five".to_string(),
+            },
+            TestCase {
+                expected_kind: TokenKind::Assign,
+                expected_literal: "=".to_string(),
+            },
+            TestCase {
+                expected_kind: TokenKind::Number(5.0),
+                expected_literal: "5".to_string(),
+            },
+            TestCase {
+                expected_kind: TokenKind::Semicolon,
+                expected_literal: ";".to_string(),
+            },
+        ];
+
+        for case in test_cases {
+            let token = lexer.next_token();
+            assert_eq!(case.expected_kind, token.kind());
+            assert_eq!(case.expected_literal, token.literal().to_string())
+        }
     }
 }
